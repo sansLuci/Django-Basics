@@ -57,6 +57,8 @@ class HelloAPIView(APIView):
 
 class HelloViewset(viewsets.ViewSet):
 
+	serializer_class = serializers.HelloSerializer
+
 	def list(self, request):
 		"""Return a hello message"""
 
@@ -65,5 +67,35 @@ class HelloViewset(viewsets.ViewSet):
 			'Automatically maps to URLs using Routers',
 			'Provides more functionality with less code'
 		]
-		
+
 		return Response({'message':'Hello', 'features':features})
+
+	def create(self, request):
+
+		serializer = serializers.HelloSerializer(data=request.data)
+
+		if serializer.is_valid:
+			name = 'Hello {0}!'.format('name')
+			message = serializer.data.get(name)
+			return Response({'message':message})
+		else:
+			return Response(serializer.errors, status=status.HTTP_404_BAD_REQUEST)
+
+	def retrieve(self, request, pk=None):
+
+		return Response({'http_method':'GET'})
+
+	def update(self, request, pk=None):
+
+		return Response({'http_method':'PUT'})
+
+	def partial_update(self, request, pk=None):
+
+		return Response({'http_method':'PATCH'})
+
+	def delete(self, request, pk=None):
+
+		return Response({'http_method':'DELETE'})
+
+
+
