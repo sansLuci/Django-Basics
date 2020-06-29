@@ -61,3 +61,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 		"""Convert the object into string"""
 
 		return self.email
+
+
+class ProfileFeedItem(models.Model):
+	"""Profile status ipdate."""
+
+	user_profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
+	status_text = models.CharField(max_length=255) 
+	created_on = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		"""Return model in string."""
+
+		return self.status_text
